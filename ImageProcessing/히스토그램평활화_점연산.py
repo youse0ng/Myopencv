@@ -47,3 +47,7 @@ def histogram_equalization(img_file) -> None:
 
 # 내가 준비하는 데이터 이미지는 어떻게 반응 할까?
 histogram_equalization("ImageProcessing\A1C_20220818_000018.jpg")
+
+# 일단 칼라 영상 -> 명암 영상 -> 히스토그램 계산 -> 명암값이 0인 곳이 너무 많다는 것을 확인
+# 평활화가 잘 안된 모양 -> 0인 곳이 너무 많아서 아마 histogram 누적 계산할 때 round 된 값이 높게 잡힌거같다.
+# 오히려 히스토그램 평활화를 진행하여 데이터를 모델에 넣으면 학습이 잘 안될 것 같다.

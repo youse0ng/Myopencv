@@ -18,6 +18,7 @@ plt.show()
 T=100
 bin_img=img[:,:,2] # R channel 
 print(bin_img)
+
 print(bin_img.shape)
 for col in range(0,948):
     for row in range(0,1434):

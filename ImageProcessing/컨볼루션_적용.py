@@ -22,7 +22,7 @@ filter_emboss=np.array([[-1.0,-1.0,0.0],
 # 엠보싱 필터에 대해 정의한다.
 
 gray16 = np.int16(gray)
-emboss = np.clip(cv.filter2D(gray16,-1,filter_emboss)+128,0,255)# 두 번째 인수를 -1 로 하면 output image의 데이터형을 input_image와 동일하게 가져감
+emboss = np.uint8(np.clip(cv.filter2D(gray16,-1,filter_emboss)+128,0,255)) # 두 번째 인수를 -1 로 하면 output image의 데이터형을 input_image와 동일하게 가져감
 emboss_bad=np.uint8(cv.filter2D(gray16,-1,filter_emboss)+128) # -1 will give the output image depth as same as the input image 여기서 깊이는 channel을 얘기하는 걸까?
 emboss_worse=cv.filter2D(gray,-1,filter_emboss) # 책에서는 주어진 영상 배열과 같은 형의 배열을 출력한다 했으니까 음.. 같은 데이터형을 출력한다고 생각해야겠다.
 # 첫번째 인수는 source image 적용할 이미지, 세번째 인수는 kernel을 입력하는데 우리는 이미 사용자 지정한 filter(kernel)를 넣어준다.
