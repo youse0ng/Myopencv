@@ -17,7 +17,12 @@ print(len(apples_after_canny[0]))
 
 cv.imshow("Canny_apple",canny1)
 cv.imshow("Apples",img)
-cv.imwrite("Canny_apples.jpg",canny1)
-cv.imwrite("Apples_after_canny_hough_transform.jpg",img)
+# cv.imwrite("Canny_apples.jpg",canny1)
+# cv.imwrite("Apples_after_canny_hough_transform.jpg",img)
+
 cv.waitKey()
 cv.destroyAllWindows()
+
+'''
+왜 캐니 엣지에서 인간의 눈으로 볼 땐 원이 전혀 아닌데, 왜 허프 변환을 통해서는 원이라고 인식을 하는 것일까?
+'''
