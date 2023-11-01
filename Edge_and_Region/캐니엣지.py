@@ -11,8 +11,8 @@ print(canny1) # 0과 1로 이루어진 엣지 맵
 print(canny1.shape)
 print(type(canny1[0][0]))
 
-cv.imshow("Original",gray)
-cv.imshow("Canny1",canny1) # 등번호 3의 경계가 잘 따였지만, 잡초와 같은 곳에는 잡음이 심함
+cv.imshow("Original",gray) 
+cv.imshow("Canny1",canny1) # 등번호 3의 경계가 잘 따였지만, 잡초와 같은 곳에는 잡음이 심함 엣지강도 맵
 cv.imshow("Canny2",canny2) # 등번호 3의 경계를 잘 못 따였지만, 잡초와 같은 곳에 잡음이 덜심함
 
 cv.waitKey()
