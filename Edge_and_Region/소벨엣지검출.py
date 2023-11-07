@@ -14,9 +14,9 @@ sobel_y = cv.convertScaleAbs(grad_y) # 절대값을 취한 양수 영상으로 �
 edge_strength = cv.addWeighted(sobel_x,0.5,sobel_y,0.5,0)
 pprint(sobel_x)
 cv.imshow('Original',gray)
-cv.imshow('Sobel_x',sobel_x) # 수직 방향의 엣지가 선명
-cv.imshow('Sobel_y',sobel_y) # 수평 방향의 엣지가 선명
-cv.imshow('edge_strength',edge_strength) # 엣지가 있을것이란 가능성: 엣지강도의 imshow()
+cv.imshow('Sobel_x',sobel_x) # 수직 방향의 엣지가 선명 # 엣지 강도 맵
+cv.imshow('Sobel_y',sobel_y) # 수평 방향의 엣지가 선명 # 엣지 강도 맵
+cv.imshow('edge_strength',edge_strength) # 엣지가 있을것이란 가능성: 엣지강도의 imshow() 엣지 강도맵
 
 cv.waitKey()
 cv.destroyAllWindows()
