@@ -48,6 +48,7 @@ popping = np.zeros([160,160],np.uint8)
 for j in range(0,160):
     for i in range(0,160):
         popping[j,i]=np.uint8((C[j//16,i//16]+0.06)*700)
+        
 
 cv.imshow("Image Display",popping)
 cv.waitKey()
