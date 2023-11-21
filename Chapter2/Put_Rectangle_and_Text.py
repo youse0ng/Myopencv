@@ -1,7 +1,7 @@
 import cv2 as cv
 import sys
 
-img=cv.imread("girl_laughing.jpg")
+img=cv.imread("Chapter2\girl_laughing.jpg")
 
 if img is None:
     sys.exit("파일이 존재하지 않습니다.")
