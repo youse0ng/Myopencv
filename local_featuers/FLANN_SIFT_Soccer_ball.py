@@ -36,9 +36,8 @@ for image in images:
     img_match=np.empty((max(img1.shape[0],cv.imread(image).shape[0]),img1.shape[1]+cv.imread(image).shape[1],3),dtype=np.uint8)
     count+=1
     cv.drawMatches(img1,kp_model,cv.imread(image),kp1,good_match,img_match,flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
-    cv.imwrite(f're_{count}.jpg',img_match)
     cv.imshow('Good Matches',img_match)
-
+    
 print('매칭에 걸린 시간: ',time.time()-start)
 k=cv.waitKey()
 cv.destroyAllWindows()

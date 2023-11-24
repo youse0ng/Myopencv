@@ -25,7 +25,9 @@ for nearest1,nearest2 in knn_match:
 print('매칭에 걸린 시간: ',time.time()-start)
 
 img_match=np.empty((max(img1.shape[0],img2.shape[0]),img1.shape[1]+img2.shape[1],3),dtype=np.uint8)
-
+print(f'max: {max(img1.shape[0],img2.shape[0])}')
+print(f'sum: {img1.shape[1]+img2.shape[1]}')
+print(img_match.shape)
 cv.drawMatches(img1,kp1,img2,kp2,good_match,img_match,flags=cv.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
 
 cv.imshow('Good Matches',img_match)

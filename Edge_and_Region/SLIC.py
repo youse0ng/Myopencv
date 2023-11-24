@@ -2,7 +2,7 @@ import skimage
 import numpy as np
 import cv2 as cv
 
-img = cv.imread("Lena.jpg")
+img = cv.imread("Edge_and_Region\Lena.jpg")
 cv.imshow("coffee image",cv.cvtColor(img,cv.COLOR_BGR2GRAY))
 
 slic1=skimage.segmentation.slic(img,compactness=20,n_segments=600)
