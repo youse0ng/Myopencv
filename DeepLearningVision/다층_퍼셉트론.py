@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 import numpy as np
 import torch.optim
 from tqdm.auto import tqdm
-
+import matplotlib.pyplot as plt
 
 # MNIST 데이터셋 불러오기
 train_data=datasets.MNIST('DeepLearningVision\data',True,transforms.ToTensor(),
@@ -66,7 +66,7 @@ model_0=MNISTModel(input_shape=28*28,
 
 # 최적화 기법 (SGD) 정의
 # 최적화할 손실함수 정의 MSELoss : Mean Squared Loss (평균 제곱 오차)
-optimizer=torch.optim.SGD(params=model_0.parameters(),lr=0.01) # model_0의 파라미터를 갱신, learning rate는 0.01 (가중치 - 0.01 * Loss에 대한 해당 가중치의 Gradient)
+optimizer=torch.optim.SGD(params=model_0.parameters(),lr=0.1) # model_0의 파라미터를 갱신, learning rate는 0.01 (가중치 - 0.01 * Loss에 대한 해당 가중치의 Gradient)
 loss_fn=torch.nn.CrossEntropyLoss()
 
 # 모델 학습하는데 걸리는 시간 측정을 위한 함수
@@ -79,7 +79,7 @@ def print_train_time(start:float,
   print(f"{device}상에서 걸린 학습시간: {total_time:.3f} seconds")
   return total_time
 
-
+# acc 평가
 def accuracy_fn(prediction,true):
     correct=torch.eq(prediction,true).sum().item()
     acc=(correct/len(true))*100
@@ -87,16 +87,23 @@ def accuracy_fn(prediction,true):
 
 
 start_time=timer()
+train_acc_list=[]
+train_loss_list=[]
+test_loss_list=[]
+test_acc_list=[]
 EPOCH=10 # 60000개의 데이터에 대한 훑고감 정도? 10번 시행
 for epoch in tqdm(range(EPOCH)):
+    train_loss=0
+    train_acc=0
     for Batch,(x_train,y_train) in enumerate(train_dataloader):
         model_0.train(True)
-        train_loss=0
         # Do forward pass (로짓 계산)
         y_logits=model_0(x_train)
         # Calculate loss (손실 계산)
         loss=loss_fn(y_logits,y_train)
         train_loss+=loss
+        # acc 계산
+        train_acc+=accuracy_fn(y_logits.argmax(dim=1),y_train)
         # optimizer zero grad (경사 추적 x)
         optimizer.zero_grad()
         # loss backward (역전파를 통한 gradient 구하기)
@@ -104,19 +111,40 @@ for epoch in tqdm(range(EPOCH)):
         # optimizer step (가중치 갱신)
         optimizer.step()
     train_loss/=len(train_dataloader)
-    print(f'train_loss={train_loss}')
+    train_acc/=len(train_dataloader)
+    train_loss_list.append(train_loss)
+    train_acc_list.append(train_acc)
+    print(f' train_loss: {train_loss}')
     # Evaluation
     test_loss=0.0
+    test_acc=0.0
     model_0.eval()
     with torch.inference_mode():
         for X_test,y_test in test_dataloader:
             # Forward Pass
             test_logits=model_0(X_test)
-
             # 손실 계산
             test_loss+=loss_fn(test_logits,y_test)
-
+        test_acc+=accuracy_fn(test_logits.argmax(dim=1),y_test)
         test_loss /= len(train_dataloader)
-    print(f"Train_Loss: {train_loss:.2f}, Test_Loss: {test_loss:.2f}")
+        test_acc_list.append(test_acc)
+        test_loss_list.append(test_loss)
+    print(f"Train_Loss: {train_loss:.2f}, Train_acc: {train_acc:.2f}, Test_Loss: {test_loss:.2f}, Test_Acc: {test_acc:.2f}")
 end_time=timer()
 print_train_time(start_time,end_time)
+
+# 결과 플로팅 하고싶다.
+plt.figure()
+plt.plot(np.arange(EPOCH),train_acc_list,label='train_acc',color='green')
+plt.plot(np.arange(EPOCH),test_acc_list,label='test_acc',color='red')
+plt.xlabel('EPOCHS')
+plt.ylabel("Accuracy")
+plt.legend()
+
+plt.figure()
+plt.plot(np.arange(EPOCH),test_loss_list,label='test_loss')
+plt.plot(np.arange(EPOCH),train_loss_list,label='train_loss',color='blue')
+plt.xlabel('EPOCHS')
+plt.ylabel("Loss")
+plt.legend()
+plt.show()
