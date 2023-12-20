@@ -90,7 +90,7 @@ train_acc_list=[]
 train_loss_list=[]
 test_loss_list=[]
 test_acc_list=[]
-EPOCH=10 # 60000개의 데이터에 대한 훑고감 정도? 10번 시행
+EPOCH=5 # 60000개의 데이터에 대한 훑고감 정도? 10번 시행
 for epoch in tqdm(range(EPOCH)):
     train_loss=0
     train_acc=0
@@ -111,7 +111,7 @@ for epoch in tqdm(range(EPOCH)):
         optimizer.step()
     train_loss/=len(train_dataloader)
     train_acc/=len(train_dataloader)
-    train_loss_list.append(train_loss)
+    train_loss_list.append(train_loss.detach().numpy())
     train_acc_list.append(train_acc)
     print(f' train_loss: {train_loss}')
     # Evaluation
@@ -139,7 +139,6 @@ plt.plot(np.arange(EPOCH),test_acc_list,label='test_acc',color='red')
 plt.xlabel('EPOCHS')
 plt.ylabel("Accuracy")
 plt.legend()
-
 plt.figure()
 plt.plot(np.arange(EPOCH),test_loss_list,label='test_loss')
 plt.plot(np.arange(EPOCH),train_loss_list,label='train_loss',color='blue')
