@@ -24,7 +24,6 @@ class MNISTModel(torch.nn.Module):
                                                    out_features=output_shape)
         )
     def forward(self,x):
-        print(x.shape)
         return self.layer1(x)
 
 # 모델 Parameter Load
@@ -59,6 +58,7 @@ def grab_numerals():
         roi=img[51:149,11+i*100:9+(i+1)*100,0]
         roi=255-cv.resize(roi,(28,28),interpolation=cv.INTER_CUBIC)
         numerals.append(roi)
+    print(numerals)
     numerals=np.array(numerals)
     return numerals
 
@@ -75,9 +75,9 @@ def recognition():
     numerals=grab_numerals()
     numerals=numerals.reshape(5,784)
     numerals=numerals.astype(np.float32)/255.0
-    result = model(numerals)
-    class_id = np.argmax(result,dim=1)
-    for i in range(5):
+    for i in range(len(numerals)):
+        result=model(numerals[i])
+        class_id=np.argmax(result,dim=1)
         cv.putText(img,str(class_id[i]),(50+i*100,180),cv.FONT_HERSHEY_SIMPLEX,1,(255,0,0),1)
         winsound.Beep(1000,500)
     
