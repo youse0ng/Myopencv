@@ -34,8 +34,7 @@ model.eval()
 test_image=open('DeepLearningVision\MNIST\\number5.jpg')
 transformation=Compose([Grayscale(),Resize((28,28)),ToTensor()])
 transformed_image=transformation(test_image)
-
-classes=['0 - zero', '1 - one', '2 - two', '3 - three', '4 - four', '5 - five', '6 - six', '7 - seven', '8 - eight', '9 - nine']
+classes=['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
 
 # 변환된 이미지 확인
 plt.figure()
@@ -58,7 +57,6 @@ def grab_numerals():
         roi=img[51:149,11+i*100:9+(i+1)*100,0]
         roi=255-cv.resize(roi,(28,28),interpolation=cv.INTER_CUBIC)
         numerals.append(roi)
-    print(numerals)
     numerals=np.array(numerals)
     return numerals
 
@@ -73,15 +71,14 @@ def show():
 
 def recognition():
     numerals=grab_numerals()
-    numerals=numerals.reshape(5,784)
     numerals=numerals.astype(np.float32)/255.0
     for i in range(len(numerals)):
-        result=model(numerals[i])
-        class_id=np.argmax(result,dim=1)
-        cv.putText(img,str(class_id[i]),(50+i*100,180),cv.FONT_HERSHEY_SIMPLEX,1,(255,0,0),1)
+        y=torch.FloatTensor(numerals[i])
+        y=torch.unsqueeze(y,dim=0)
+        result=model(y)
+        class_id=torch.argmax(result,dim=1)
+        cv.putText(img,str(classes[class_id]),(50+i*100,180),cv.FONT_HERSHEY_SIMPLEX,1,(255,0,0),1)
         winsound.Beep(1000,500)
-    
-
 BrushSiz=4
 LColor=(0,0,0)
 
